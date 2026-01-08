@@ -15,9 +15,7 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Fetch the latest .deb URL dynamically and install it
-RUN wget -q -O /tmp/update.json https://edge.uprock.com/v1/app-download/update.json && \
-    DEB_URL=$(jq -r '.platforms[] | select(.os == "linux" and .arch == "amd64") | .filename' /tmp/update.json) && \
-    wget -q -O /tmp/uprockmining.deb "$DEB_URL" && \
+wget -q -O /tmp/uprockmining.deb https://edge.uprock.com/v1/app-download/UpRock-Mining-v0.0.16.deb && \
     dpkg -i /tmp/uprockmining.deb && \
     apt-get update -y && \
     apt-get install -y --fix-broken --no-install-recommends --no-install-suggests && \
