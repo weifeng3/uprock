@@ -8,18 +8,18 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends --no-install-suggests \
     binutils wget ca-certificates tini gpg openbox \
-    python3-pip python3-venv git jq \
+    python3-pip python3-venv git \
     libwebkit2gtk-4.1-0 policykit-1 \
     dos2unix && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Fetch the latest .deb URL dynamically and install it
-wget -q -O /tmp/uprockmining.deb https://edge.uprock.com/v1/app-download/UpRock-Mining-v0.0.16.deb && \
+# Download and install the .deb package in one layer
+RUN wget -q -O /tmp/uprockmining.deb https://edge.uprock.com/v1/app-download/UpRock-Mining-v0.0.13.deb && \
     dpkg -i /tmp/uprockmining.deb && \
     apt-get update -y && \
     apt-get install -y --fix-broken --no-install-recommends --no-install-suggests && \
-    rm /tmp/uprockmining.deb /tmp/update.json && \
+    rm /tmp/uprockmining.deb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -43,7 +43,7 @@ RUN wget -q -O- https://packagecloud.io/dcommander/turbovnc/gpgkey | gpg --dearm
     rm -rf /var/lib/apt/lists/*
 
 # Remove unnecessary packages
-RUN apt-get purge -y wget gpg jq && \
+RUN apt-get purge -y wget gpg && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
